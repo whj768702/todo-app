@@ -1,17 +1,19 @@
 import { Button, Form, Input } from "antd";
 import type React from "react";
+import { useNavigate } from "react-router-dom";
 
 import api, { setToken } from "../api";
 
-export default function Login({ onLogin }: { onLogin: () => void }) {
+export default function Login() {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { email, password } = form.getFieldsValue();
     const res = await api.post("/login", { email, password });
     localStorage.setItem("token", res.data.token);
     setToken(res.data.token);
-    onLogin();
+    navigate("/todos");
   };
 
   return (

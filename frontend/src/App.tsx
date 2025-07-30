@@ -1,34 +1,34 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import { setToken } from "./api";
 import Login from "./pages/Login";
 import Todos from "./pages/Todos";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setToken(token);
-      setLoggedIn(true);
-    }
-  }, []);
+  const token = localStorage.getItem("token");
+  if (token) {
+    setToken(token);
+    navigate("/todos");
+  } else {
+    navigate("/login");
+  }
 
   return (
-    <BrowserRouter>
+    <>
       <Routes>
-        {loggedIn ? (
-          <Route path="*" element={<Todos />} />
-        ) : (
-          <Route
-            path="*"
-            element={<Login onLogin={() => setLoggedIn(true)} />}
-          />
-        )}
+        <Route path="/todos" element={<Todos />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
-    </BrowserRouter>
+      <Outlet />
+    </>
   );
 }
 
