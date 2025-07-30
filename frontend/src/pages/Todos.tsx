@@ -1,4 +1,5 @@
 import { Button, Input, Space } from "antd";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import api from "../api";
 
@@ -7,6 +8,7 @@ interface Todo {
   title: string;
   content?: string;
   done: boolean;
+  createAt: string;
 }
 
 export default function Todos() {
@@ -58,7 +60,7 @@ export default function Todos() {
         {todos.map((todo) => (
           <div
             key={todo.id}
-            className="flex justify-between items-center p-2 border rounded"
+            className={`flex justify-between items-center p-2 border rounded ${todo.done ? "border-green-500" : "border-amber-500"}`}
           >
             <span
               className={`cursor-pointer ${todo.done ? "line-through text-gray-400" : ""}`}
@@ -66,6 +68,7 @@ export default function Todos() {
             >
               {todo.title}
             </span>
+            <span>{dayjs(todo.createAt).format("YYYY-MM-DD HH:mm:ss")}</span>
             <Button onClick={() => deleteTodo(todo.id)} type="text" danger>
               Delete
             </Button>
