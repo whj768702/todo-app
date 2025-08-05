@@ -16,6 +16,8 @@ export default function Login() {
     navigate("/todos");
   };
 
+  console.log('here is login page');
+
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <Form

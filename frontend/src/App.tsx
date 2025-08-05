@@ -1,6 +1,6 @@
 import "./App.css";
+import { useEffect } from "react";
 import {
-  BrowserRouter,
   Outlet,
   Route,
   Routes,
@@ -13,19 +13,21 @@ import Todos from "./pages/Todos";
 function App() {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
-  if (token) {
-    setToken(token);
-    navigate("/todos");
-  } else {
-    navigate("/login");
-  }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+      navigate("/todos");
+    } else {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <>
       <Routes>
+        <Route index path="/login" element={<Login />} />
         <Route path="/todos" element={<Todos />} />
-        <Route path="/login" element={<Login />} />
       </Routes>
       <Outlet />
     </>

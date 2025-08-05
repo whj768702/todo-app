@@ -56,7 +56,7 @@ export const updateTodo = async (ctx: Context) => {
 
   const updated = await prisma.todo.update({
     where: { id },
-    data: { title, content, done },
+    data: { title, content, done, createAt: new Date() },
   });
 
   ctx.body = updated;
