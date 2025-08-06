@@ -4,12 +4,14 @@ import type { Context } from "koa";
 const prisma = new PrismaClient();
 
 export const createTodo = async (ctx: Context) => {
-  const { title, content } = ctx.request.body as {
+  const { title, content, deadline } = ctx.request.body as {
     title: string;
     content?: string;
+    deadline?: Date;
   };
 
   const userId = ctx.state.user.userId;
+  console.log("create todo with userId: ", userId);
   if (!title) {
     ctx.status = 400;
     ctx.body = { message: "Title is required" };
@@ -21,6 +23,7 @@ export const createTodo = async (ctx: Context) => {
       title,
       content,
       userId,
+      deadline,
     },
   });
   ctx.body = todo;

@@ -1,5 +1,4 @@
-import { Button, Form, Input } from "antd";
-import type React from "react";
+import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import api, { setToken } from "../api";
@@ -7,13 +6,21 @@ import api, { setToken } from "../api";
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const { email, password } = form.getFieldsValue();
     const res = await api.post("/login", { email, password });
     localStorage.setItem("token", res.data.token);
     setToken(res.data.token);
     navigate("/todos");
+  };
+
+  const handleRegister = async () => {
+    const { email, password } = form.getFieldsValue();
+    const res = await api.post("/register", { email, password });
+    if (res.status === 200) {
+      message.info("Register successfully");
+    }
+    console.log("handle register: ", res);
   };
 
   console.log('here is login page');
@@ -22,7 +29,6 @@ export default function Login() {
     <div className="w-screen h-screen flex items-center justify-center">
       <Form
         form={form}
-        onSubmitCapture={handleSubmit}
         labelCol={{ span: 8 }}
         labelAlign="left"
       >
@@ -43,8 +49,11 @@ export default function Login() {
         >
           <Input placeholder="Password" type="password" />
         </Form.Item>
-        <Button htmlType="submit" type="primary">
+        <Button type="primary" onClick={handleSubmit}>
           Login
+        </Button>
+        <Button type="link" onClick={handleRegister}>
+          Register
         </Button>
       </Form>
     </div>

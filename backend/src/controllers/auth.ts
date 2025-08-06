@@ -28,11 +28,11 @@ export const register = async (ctx: Context) => {
     return;
   }
 
-  const hasded = await hashPassword(password);
+  const hashedPsd = await hashPassword(password);
   const user = await prisma.user.create({
     data: {
       email,
-      password: hasded,
+      password: hashedPsd,
     },
   });
   ctx.body = {
@@ -47,7 +47,9 @@ export const login = async (ctx: Context) => {
     password: string;
   };
 
+  console.log("new user: ", email, password);
   const user = await prisma.user.findUnique({ where: { email } });
+  console.log("user: ", user);
   if (!user || !(await comparePassword(password, user.password))) {
     ctx.status = 401;
     ctx.body = {

@@ -1,4 +1,4 @@
-import { Button, Input, Modal, message, Popconfirm, Space } from "antd";
+import { Button, DatePicker, Form, Input, Modal, message, Popconfirm, Space } from "antd";
 import dayjs from "dayjs";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ interface Todo {
 }
 
 export default function Todos() {
+  const [form] = Form.useForm();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [title, setTile] = useState("");
   const [editModal, setEditModal] = useState(false);
@@ -61,17 +62,22 @@ export default function Todos() {
 
   return (
     <div className="max-w-xl mx-auto mt-10 space-y-4">
-      <div className="flex gap-2">
-        <Input
-          value={title}
-          onChange={(e) => setTile(e.target.value)}
-          type="text"
-          placeholder="New Todo"
-        />
-        <Button type="primary" onClick={addTodo}>
-          Add
-        </Button>
-      </div>
+      <Form form={form} labelCol={{ span: 4 }} labelAlign="left">
+        <Form.Item name={"title"} label="Title">
+          <Input
+            value={title}
+            onChange={(e) => setTile(e.target.value)}
+            type="text"
+            placeholder="New Todo"
+          />
+        </Form.Item>
+        <Form.Item name={"deadline"} label="Deadline">
+          <DatePicker className="w-full" />
+        </Form.Item>
+      </Form>
+      <Button type="primary" onClick={addTodo}>
+        Add
+      </Button>
       <Space direction="vertical" style={{ display: "flex" }}>
         {todos.map((todo) => (
           <div
