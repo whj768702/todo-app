@@ -7,6 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { setToken } from "./api";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Todos from "./pages/Todos";
 
@@ -21,13 +22,14 @@ function App() {
     } else {
       navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <>
       <Routes>
         <Route index path="/login" element={<Login />} />
         <Route path="/todos" element={<Todos />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Outlet />
     </>

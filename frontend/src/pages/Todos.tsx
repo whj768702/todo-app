@@ -2,6 +2,7 @@ import { Button, DatePicker, Form, Input, Modal, message, Popconfirm, Space } fr
 import dayjs from "dayjs";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import api from "../api";
 
 interface Todo {
@@ -18,6 +19,7 @@ export default function Todos() {
   const [title, setTile] = useState("");
   const [editModal, setEditModal] = useState(false);
   const [editTodo, setEditTodo] = useState<Todo | null>(null);
+  const navigate = useNavigate();
 
   const fetchTodos = async () => {
     const res = await api.get("/todos");
@@ -56,12 +58,17 @@ export default function Todos() {
     fetchTodos();
   };
 
+  const handleGoto = () => {
+    navigate("/dashboard");
+  };
+
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [fetchTodos]);
 
   return (
     <div className="max-w-xl mx-auto mt-10 space-y-4">
+      <div onClick={()=>handleGoto()}>go dashboard</div>
       <Form form={form} labelCol={{ span: 4 }} labelAlign="left">
         <Form.Item name={"title"} label="Title">
           <Input

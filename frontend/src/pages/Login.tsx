@@ -12,6 +12,7 @@ export default function Login() {
     localStorage.setItem("token", res.data.token);
     setToken(res.data.token);
     navigate("/todos");
+    // navigate("/dashboard");
   };
 
   const handleRegister = async () => {
