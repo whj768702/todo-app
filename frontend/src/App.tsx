@@ -24,7 +24,7 @@ function App() {
       // Only redirect to /todos when the user is at root or the login page
       // so manual navigation to other routes (like /dashboard) isn't overridden.
       if (location.pathname === "/" || location.pathname === "/login") {
-        navigate("/todos");
+        navigate("/dashboard");
       }
     } else {
       // If not authenticated, ensure the user is sent to /login unless
