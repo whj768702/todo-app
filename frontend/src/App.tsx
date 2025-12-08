@@ -4,6 +4,7 @@ import {
   Outlet,
   Route,
   Routes,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 import { setToken } from "./api";
@@ -14,15 +15,25 @@ import Todos from "./pages/Todos";
 function App() {
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setToken(token);
-      navigate("/todos");
+      // Only redirect to /todos when the user is at root or the login page
+      // so manual navigation to other routes (like /dashboard) isn't overridden.
+      if (location.pathname === "/" || location.pathname === "/login") {
+        navigate("/todos");
+      }
     } else {
-      navigate("/login");
+      // If not authenticated, ensure the user is sent to /login unless
+      // they're already on the login page.
+      if (location.pathname !== "/login") {
+        navigate("/login");
+      }
     }
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return (
     <>
